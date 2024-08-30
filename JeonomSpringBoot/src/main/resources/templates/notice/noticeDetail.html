@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://thymeleaf.org">
+	<head>
+		<meta charset="UTF-8">
+		<title>공지사항 상세조회</title>
+		<link rel="stylesheet" href="/css/main.css">
+	</head>
+	<body>
+		<h1>공지사항 상세조회</h1>
+		<ul>
+			<li>
+				<label>공지번호</label>
+				<span th:text="${notice.noticeNo}"></span>
+			</li>
+			<li>
+				<label>작성일자</label>
+				<span>[[${notice.noticeDate}]]</span>
+			</li>
+			<li>
+				<label>제목</label>
+				<span>[[${notice.noticeSubject}]]</span>
+			</li>
+			<li>
+				<label>내용</label>
+				<span>[[${notice.noticeContent}]]</span>
+			</li>
+			<li>
+				<label>첨부파일</label>
+<!-- 				<a href="${noticeFile.filePath}${noticeFile.fileRename}" th:text="${noticeFile.fileName"></a> -->
+				<th:block th:if="${notice.noticeFile != null}">
+					<a th:href="@{|${notice.noticeFile.filePath}${notice.noticeFile.fileRename}|}" 
+						th:download="${notice.noticeFile.fileName}">다운로드</a>
+				</th:block>
+				<th:block th:if="${notice.noticeFile == null}">
+					<span>첨부파일 없음</span>
+				</th:block>
+			</li>
+		</ul>
+		<button th:onclick="showModifyPage();">수정하기</button>
+<!-- 	<button th:onclick="deleteNotice();">삭제하기</button> -->
+<!--	Thymeleaf 변수를 사용하여 자바스크립트 함수 호출 -->
+	<button th:onclick="deleteNotice(/*[[${notice.noticeNo}]]*/);">삭제하기</button>
+		<button th:onclick="goBack();">뒤로가기</button>
+	</body>
+	<script th:inline="javascript">
+		
+		function deleteNotice(noticeNo) {
+			if(confirm("정말 삭제하시겠습니까?")) {
+				// /notice/detail/1000210 -> notice/delete/100210
+				location.href = location.pathname.replace("detail", "delete");
+				alert("삭제가 완료되었습니다.");
+			}
+		}
+	
+		function showModifyPage() {
+			// /notice/detail/10000202
+			// pathname.replace를 통해 detail만 modify로 변경해줌
+			location.href=location.pathname.replace("detail", "modify");
+		}
+		
+		function goBack() {
+			history.go(-1);
+		}
+	</script>
+</html>

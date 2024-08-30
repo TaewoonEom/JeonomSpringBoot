@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://thymeleaf.org">
+	<head>
+		<meta charset="UTF-8">
+		<title>공지사항 수정</title>
+	</head>
+	<body>
+		<h1>공지사항 수정</h1>
+<!-- 	절대경로 -->
+		<form action="/notice/modify" method="post" th:object="${notice}" enctype="multipart/form-data">
+<!-- 	상대경로 -->
+<!-- 	<form action="/modify" method="post" th:object=${notice}> -->
+		<input type="hidden" name="noticeNo" th:value="${noticeNo}">
+			<ul>
+				<li>
+					<label>제목</label>
+					<input type="text" name="noticeSubject" th:value="*{noticeSubject}">
+				</li>
+				<li>
+					<label>내용</label>
+					<textarea rows="10" cols="40" name="noticeContent" th:text="*{noticeContent}"></textarea>
+				</li>
+				<li>
+					<label>첨부파일</label>
+					<th:block th:if="*{noticeFile != null}">
+						<a th:href="@{|*{noticeFile.filePath}*{noticeFile.fileRename}|}" 
+								th:download="*{noticeFile.fileName}">다운로드</a>
+					</th:block>
+					<th:block th:if="*{noticeFile == null}">
+						<span>첨부파일 없음</span>
+				</th:block>
+				<input type="file" name="reloadFile">
+				</li>
+			</ul>
+			<div>
+				<button id="modifybtn">수정</button>
+			</div>
+		</form>
+	</body>
+</html>

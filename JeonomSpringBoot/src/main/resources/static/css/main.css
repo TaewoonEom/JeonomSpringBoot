@@ -1,0 +1,27 @@
+@charset "UTF-8";
+/* list */
+table {
+	border: 1px solid black;
+	border-collapse: collapse;
+	text-align: center;
+}
+	th, td {
+		border : 1px solid black;
+		height: 25px;
+	}
+	th {
+		width: 200px;
+		background-color: skyblue;
+	}
+
+/* detail */
+ul {
+	list-style-type: none;
+}
+	ul li {
+		margin-bottom: 15px;
+	}
+		ul li label {
+			width: 100px;
+			float: left;
+		}

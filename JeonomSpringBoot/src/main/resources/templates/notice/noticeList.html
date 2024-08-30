@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://thymeleaf.org">
+	<head>
+		<meta charset="UTF-8">
+		<title>공지사항 목록</title>
+		<link rel="stylesheet" href="/css/main.css">
+	</head>
+	<style>
+		a {
+			text-decoration: none;
+		}
+		a:link, a:visited {
+			color: black;
+		}
+	</style>
+	<body>
+		<h1>공지사항 목록</h1>
+		<table>
+			<thead>
+				<tr>
+					<th>글번호</th>
+					<th>제목</th>
+					<th>작성자</th>
+					<th>작성일자</th>
+					<th>조회수</th>
+				</tr>
+			</thead>
+			<tbody>
+<!-- 			<th:block th:each=""></th:block> -->
+				<tr th:each="notice : ${nList}">
+<!-- 				간단하게 출력할 때 사용 -->
+					<td>[[${notice.noticeNo}]]</td>
+<!-- 				보안과 유지보수 측면에서 권장되는 방법 -->
+					<td>
+<!-- 					쿼리스트링 방식 -->
+<!-- 					<a th:href="@{/notice/detail(noticeNo=${notice.noticeNo})}" th:text="${notice.noticeSubject}"></a> -->
+<!-- 					PathVariable 방식 -->
+						<a th:href="@{/notice/detail/{noticeNo}(noticeNo=${notice.noticeNo})}" th:text="${notice.noticeSubject}"></a>
+					</td>
+					<td th:text="${notice.noticeWriter}"></td>
+					<td>[[${notice.noticeDate}]]</td>
+					<td>[[${notice.viewCount}]]</td>
+				</tr>
+			</tbody>
+			<tfoot>
+				<tr align="center">
+					<td colspan="5">
+						<a th:href="@{/notice/list(cp=${pn.currentPage -1})}">◀</a>
+						<th:block th:each="p : ${#numbers.sequence(pn.startNavi, pn.endNavi)}">
+							<a th:href="@{/notice/list(cp=${p})}" th:text="${p}" style="font-size:18px;"></a>
+						</th:block>
+						<a th:href="@{/notice/list(cp=${pn.currentPage +1})}">▶</a>
+					</td>
+				</tr>
+			</tfoot>
+		</table>
+	</body>
+</html>

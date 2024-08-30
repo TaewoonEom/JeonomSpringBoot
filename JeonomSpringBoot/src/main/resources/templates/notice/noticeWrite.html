@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://thymeleaf.org">
+	<head>
+		<meta charset="UTF-8">
+		<title>공지사항 등록</title>
+	</head>
+	<body>
+		<h1>공지사항 등록</h1>
+		<form action="/notice/write" method="post" enctype="multipart/form-data">
+			제목 <input type="text" name="noticeSubject"> <br><br>
+			내용 <textarea rows="10" cols="40" name="noticeContent"></textarea> <br><br>
+			첨부파일 <input type="file" name="uploadFile"> <br><br>
+			<input type="submit" value="등록">
+		</form>
+	</body>
+</html>

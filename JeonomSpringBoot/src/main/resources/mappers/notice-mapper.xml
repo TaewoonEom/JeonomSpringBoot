@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jeonom.boot.notice.model.mapper.NoticeMapper">
+	<resultMap id="noticeResultMap" type="Notice">
+		<id property="noticeNo" column="NOTICE_NO"/>
+		<association property="noticeFile"
+					javaType="NoticeFile" 
+					select="selectNoticeFile"
+					column="NOTICE_NO"/>
+	</resultMap>
+	
+	<!-- Notice File 쿼리문 -->
+	<insert id="insertNoticeFile">
+		INSERT INTO NOTICE_FILE_TBL
+		VALUES(SEQ_FILE_NO.NEXTVAL, #{fileName}, #{fileRename}, #{filePath}, #{noticeNo})
+	</insert>
+	<update id="updateNoticeFile">
+		UPDATE NOTICE_FILE_TBL
+		SET FILE_NAME = #{fileName}, FILE_RENAME = #{fileRename}, FILE_PATH = #{filePath}
+		WHERE NOTICE_NO = #{noticeNo}
+	</update>
+	<delete id="deleteNoticeFile">
+		DELETE FROM NOTICE_FILE_TBL WHERE NOTICE_NO = #{noticeNo}
+	</delete>
+	<select id="selectNoticeFile" resultType="NoticeFile">
+		SELECT * FROM NOTICE_FILE_TBL WHERE NOTICE_NO = #{noticeNo}
+	</select>
+	<select id=""></select>
+	
+	<!-- Notice 쿼리문 -->
+	<!-- selectkey를 사용함으로써 ServiceImpl에서 inputNoticeNo에서 noticeNo를 가져올 수 있다 -->
+	<insert id="insertNotice" useGeneratedKeys="true">
+		<selectKey order="BEFORE" resultType="_int" keyProperty="noticeNo">
+			SELECT SEQ_NOTICE_NO.NEXTVAL FROM DUAL
+		</selectKey>
+		INSERT INTO NOTICE_TBL
+		VALUES(#{noticeNo}, #{noticeSubject}, #{noticeContent}, #{noticeWriter}, DEFAULT, DEFAULT, DEFAULT)
+	</insert>
+	<update id="updateNotice">
+		UPDATE NOTICE_TBL
+		SET NOTICE_SUBJECT = #{noticeSubject}, NOTICE_CONTENT = #{noticeContent}, UPDATE_DATE = DEFAULT 
+		WHERE NOTICE_NO = #{noticeNo}
+	</update>
+	<delete id="deleteNotice">
+		DELETE FROM NOTICE_TBL WHERE NOTICE_NO = #{noticeNo}
+	</delete>
+	<select id="selectOne" resultMap="noticeResultMap">
+		SELECT * FROM NOTICE_TBL WHERE NOTICE_NO = #{noticeNo}
+	</select>
+	<select id="selectList" resultType="Notice">
+		SELECT * FROM NOTICE_TBL ORDER BY NOTICE_NO DESC
+	</select>
+	<select id="getTotalCount" resultType="_int">
+		SELECT COUNT(*) FROM NOTICE_TBL
+	</select>
+	<!-- 
+		$와 #의 차이점, 
+		#을 쓰면 문자열이 됨(''로 감싸줌), 
+		$를 쓰면 전달받은 값 그대로 
+	-->
+</mapper>
